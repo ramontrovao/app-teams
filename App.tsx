@@ -9,7 +9,7 @@ import {
 
 import { Groups } from "@screens/Groups/index";
 import theme from "@theme/theme";
-import { ActivityIndicator } from "react-native";
+import { Loading } from "@components/Loading";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -21,7 +21,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <StatusBar style="light" translucent />
 
-      {fontsLoaded ? <Groups /> : <ActivityIndicator />}
+      {fontsLoaded ? <Groups /> : <Loading />}
     </ThemeProvider>
   );
 }
