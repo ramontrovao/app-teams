@@ -9,7 +9,7 @@ export const Title = styled.Text`
   ${({ theme: { FONT_SIZE, FONT_FAMILY, COLORS } }) => css`
     text-align: center;
 
-    font-size: ${FONT_SIZE.XL};
+    font-size: ${FONT_SIZE.XL}px;
     font-family: ${FONT_FAMILY.BOLD};
     color: ${COLORS.WHITE};
   `}
@@ -19,7 +19,7 @@ export const Subtitle = styled.Text`
   ${({ theme: { FONT_SIZE, FONT_FAMILY, COLORS } }) => css`
     text-align: center;
 
-    font-size: ${FONT_SIZE.MD};
+    font-size: ${FONT_SIZE.MD}px;
     font-family: ${FONT_FAMILY.REGULAR};
     color: ${COLORS.GRAY_300};
   `}
