@@ -5,6 +5,7 @@ import { GroupsContainer } from "./styles";
 import { useState } from "react";
 import { FlatList } from "react-native";
 import { ListEmpty } from "@components/ListEmpty";
+import { Button } from "@components/Button";
 
 export const Groups = () => {
   const [groups, setGroups] = useState<string[]>([]);
@@ -23,6 +24,7 @@ export const Groups = () => {
         }
         showsVerticalScrollIndicator={false}
       />
+      <Button type="GREEN" title="Criar nova turma" />
     </GroupsContainer>
   );
 };
