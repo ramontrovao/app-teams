@@ -1,6 +1,7 @@
+import { Button } from "@components/Button";
 import { Header } from "@components/Header";
 import { Hightlight } from "@components/Highlight";
-import { UsersThree } from "phosphor-react-native";
+import { Input } from "@components/Input";
 import * as S from "./styles";
 
 export const NewGroup = () => {
@@ -10,10 +11,11 @@ export const NewGroup = () => {
 
       <S.NewGroupContent>
         <S.Icon />
-        <Hightlight
-          title="Nova turma"
-          subtitle="Crie uma nova turma e adicione novos integrantes!"
-        />
+        <Hightlight title="Nova turma" subtitle="Crie uma nova turma" />
+
+        <Input />
+
+        <Button title="Criar" style={{ marginTop: 15 }} />
       </S.NewGroupContent>
     </S.NewGroupContainer>
   );
