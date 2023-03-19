@@ -4,9 +4,10 @@ import { Hightlight } from "@components/Highlight";
 import { GroupsContainer } from "./styles";
 import { useState } from "react";
 import { FlatList } from "react-native";
+import { ListEmpty } from "@components/ListEmpty";
 
 export const Groups = () => {
-  const [groups, setGroups] = useState(["Galera da rocket", "Ramon", "Ramon3"]);
+  const [groups, setGroups] = useState<string[]>([]);
 
   return (
     <GroupsContainer>
@@ -16,6 +17,11 @@ export const Groups = () => {
         data={groups}
         keyExtractor={(item) => item}
         renderItem={({ item }) => <GroupCard title={item} />}
+        contentContainerStyle={groups.length === 0 && { marginTop: 80 }}
+        ListEmptyComponent={
+          <ListEmpty message="Parece que a lista está vazia :(. Que tal cadastrar a primeira turma?" />
+        }
+        showsVerticalScrollIndicator={false}
       />
     </GroupsContainer>
   );
