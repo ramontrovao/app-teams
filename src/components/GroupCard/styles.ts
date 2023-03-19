@@ -5,13 +5,14 @@ import styled, { css } from "styled-components/native";
 export const GroupCardContainer = styled(TouchableOpacity)`
   width: 100%;
   height: 90px;
+  padding: 24px;
+  margin-bottom: 12px;
 
   flex-direction: row;
+  align-items: center;
 
   background: ${({ theme: { COLORS } }) => COLORS.GRAY_500};
   border-radius: 6px;
-
-  padding: 24px;
 `;
 
 export const Title = styled.Text`
@@ -25,7 +26,7 @@ export const Title = styled.Text`
 export const Icon = styled(UsersThree).attrs(({ theme: { COLORS } }) => ({
   size: 32,
   color: COLORS.GREEN_700,
-  width: "fill",
+  weight: "fill",
 }))`
   margin-right: 20px;
 `;

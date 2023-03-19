@@ -2,7 +2,7 @@ import { CaretLeft } from "phosphor-react-native";
 import styled from "styled-components/native";
 
 export const HeaderContainer = styled.View`
-  padding: 24px;
+  padding: 12px;
 
   justify-content: center;
   align-items: center;
