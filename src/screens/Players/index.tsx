@@ -13,7 +13,7 @@ export const Players = () => {
         subtitle="Adicione a galera e separe os times! :)"
       />
 
-      <ButtonIcon type="PLUS" />
+      <ButtonIcon variant="GREEN" icon="add" />
     </S.PlayersContainer>
   );
 };

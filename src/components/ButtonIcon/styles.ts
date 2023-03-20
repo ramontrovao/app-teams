@@ -1,11 +1,12 @@
-import { Minus, Plus } from "phosphor-react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 
-export type ButtonIconTypeStyleProps = "PLUS" | "MINUS";
+export type ButtonIconVariantStyleProps = "GREEN" | "RED";
 
 interface ButtonIconContainerProps {
-  type?: ButtonIconTypeStyleProps;
+  variant?: ButtonIconVariantStyleProps;
+  size?: number;
 }
 
 export const ButtonIconContainer = styled(
@@ -20,12 +21,9 @@ export const ButtonIconContainer = styled(
   margin-left: 12px;
 `;
 
-export const PlusIcon = styled(Plus).attrs(({ theme: { COLORS } }) => ({
-  color: COLORS.GREEN_700,
-  size: 24,
-}))``;
-
-export const MinusIcon = styled(Minus).attrs(({ theme: { COLORS } }) => ({
-  color: COLORS.RED_DARK,
-  size: 24,
-}))``;
+export const Icon = styled(MaterialIcons).attrs<ButtonIconContainerProps>(
+  ({ theme: { COLORS }, variant, size }) => ({
+    color: variant === "GREEN" ? COLORS.GREEN_500 : COLORS.RED_DARK,
+    size: size,
+  })
+)``;

@@ -1,14 +1,21 @@
 import { TouchableOpacityProps } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import * as S from "./styles";
 
 type ButtonIconProps = {
-  type?: S.ButtonIconTypeStyleProps;
+  icon: keyof typeof MaterialIcons.glyphMap;
+  variant?: S.ButtonIconVariantStyleProps;
+  size?: number;
 } & TouchableOpacityProps;
 
-export const ButtonIcon = ({ type = "PLUS" }: ButtonIconProps) => {
+export const ButtonIcon = ({
+  icon,
+  variant = "GREEN",
+  size = 24,
+}: ButtonIconProps) => {
   return (
     <S.ButtonIconContainer>
-      {type === "PLUS" ? <S.PlusIcon /> : <S.MinusIcon />}
+      <S.Icon name={icon} variant={variant} size={size} />
     </S.ButtonIconContainer>
   );
 };
