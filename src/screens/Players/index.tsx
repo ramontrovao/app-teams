@@ -1,3 +1,4 @@
+import { ButtonIcon } from "@components/ButtonIcon";
 import { Header } from "@components/Header";
 import { Hightlight } from "@components/Highlight";
 import * as S from "./styles";
@@ -11,6 +12,8 @@ export const Players = () => {
         title="Nome da turma"
         subtitle="Adicione a galera e separe os times! :)"
       />
+
+      <ButtonIcon type="PLUS" />
     </S.PlayersContainer>
   );
 };
