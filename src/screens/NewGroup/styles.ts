@@ -1,7 +1,8 @@
 import { UsersThree } from "phosphor-react-native";
+import { SafeAreaView } from "react-native";
 import styled from "styled-components/native";
 
-export const NewGroupContainer = styled.View`
+export const NewGroupContainer = styled(SafeAreaView)`
   flex: 1;
   background: ${({ theme: { COLORS } }) => COLORS.GRAY_600};
   padding: 24px;
