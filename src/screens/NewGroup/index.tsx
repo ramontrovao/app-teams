@@ -4,14 +4,16 @@ import { Hightlight } from "@components/Highlight";
 import { Input } from "@components/Input";
 
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 
 import * as S from "./styles";
 
 export const NewGroup = () => {
   const { navigate } = useNavigation();
+  const [newGroupName, setNewGroupName] = useState("");
 
   const handleSendToPlayers = () => {
-    navigate("players", { group: "abuble" });
+    navigate("players", { newGroupName });
   };
 
   return (
@@ -22,7 +24,11 @@ export const NewGroup = () => {
         <S.Icon />
         <Hightlight title="Nova turma" subtitle="Crie uma nova turma" />
 
-        <Input placeholder="Nome da turma" />
+        <Input
+          placeholder="Nome da turma"
+          onChangeText={setNewGroupName}
+          value={newGroupName}
+        />
 
         <Button
           title="Criar"
