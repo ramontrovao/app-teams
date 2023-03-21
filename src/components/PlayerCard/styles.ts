@@ -19,7 +19,7 @@ export const Name = styled.Text`
 
     color: ${COLORS.GRAY_200};
     font-family: ${FONT_FAMILY.REGULAR};
-    font-size: ${FONT_SIZE.MD};
+    font-size: ${FONT_SIZE.MD}px;
   `}
 `;
 
