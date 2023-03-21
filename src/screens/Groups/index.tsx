@@ -1,23 +1,41 @@
 import { GroupsContainer } from "./styles";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { GroupCard } from "@components/GroupCard";
 import { Header } from "@components/Header";
 import { Hightlight } from "@components/Highlight";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
+import { getAllGroups } from "@storage/group/getAllGroups";
 
 export const Groups = () => {
   const { navigate } = useNavigation();
 
   const [groups, setGroups] = useState<string[]>([]);
 
+  const fetchGroups = async () => {
+    try {
+      const groupsData = await getAllGroups();
+
+      setGroups(groupsData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleNewGroup = () => {
     navigate("new-group");
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log("rodou");
+      fetchGroups();
+    }, [])
+  );
 
   return (
     <GroupsContainer>

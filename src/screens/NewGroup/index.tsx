@@ -4,6 +4,7 @@ import { Hightlight } from "@components/Highlight";
 import { Input } from "@components/Input";
 
 import { useNavigation } from "@react-navigation/native";
+import { createGroup } from "@storage/group/createGroup";
 import { useState } from "react";
 
 import * as S from "./styles";
@@ -12,8 +13,14 @@ export const NewGroup = () => {
   const { navigate } = useNavigation();
   const [newGroupName, setNewGroupName] = useState("");
 
-  const handleSendToPlayers = () => {
-    navigate("players", { newGroupName });
+  const handleCreateNewGroup = async () => {
+    try {
+      await createGroup(newGroupName);
+
+      navigate("players", { newGroupName });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -33,7 +40,7 @@ export const NewGroup = () => {
         <Button
           title="Criar"
           style={{ marginTop: 15 }}
-          onPress={handleSendToPlayers}
+          onPress={handleCreateNewGroup}
         />
       </S.NewGroupContent>
     </S.NewGroupContainer>
