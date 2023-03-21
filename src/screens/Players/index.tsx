@@ -9,10 +9,23 @@ import { useState } from "react";
 import * as S from "./styles";
 
 import { FlatList } from "react-native";
+import { PlayerCard } from "@components/PlayerCard";
+import { ListEmpty } from "@components/ListEmpty";
+import { Button } from "@components/Button";
 
 export const Players = () => {
   const [team, setTeam] = useState("Time A");
-  const [players, setPlayers] = useState<string[]>([]);
+  const [players, setPlayers] = useState<string[]>([
+    "Ramon",
+    "Bia",
+    "Springboot",
+    "Iuri",
+    "Pedrão",
+    "Nicolas",
+    "Lya",
+    "Avião de combate",
+    "Urubu",
+  ]);
 
   return (
     <S.PlayersContainer>
@@ -39,11 +52,24 @@ export const Players = () => {
               onPress={() => setTeam(item)}
             />
           )}
+          showsHorizontalScrollIndicator={false}
           horizontal
         />
 
         <S.NumberOfPlayers>{players.length}</S.NumberOfPlayers>
       </S.HeaderList>
+
+      <FlatList
+        data={players}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => <PlayerCard name={item} />}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <ListEmpty message="O time está vazio. Adicione jogadores e se divirtam!" />
+        }
+      />
+
+      <Button title="Remover time" type="RED" />
     </S.PlayersContainer>
   );
 };

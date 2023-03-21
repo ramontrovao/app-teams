@@ -2,6 +2,8 @@ import { SmileySad } from "phosphor-react-native";
 import styled, { css } from "styled-components/native";
 
 export const ListEmptyContainer = styled.View`
+  margin-top: 18px;
+
   flex: 1;
   gap: 12px;
   justify-content: center;
