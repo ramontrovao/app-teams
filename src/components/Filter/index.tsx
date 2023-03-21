@@ -8,7 +8,7 @@ type FilterProps = {
 
 export const Filter = ({ title, isActive = false, ...rest }: FilterProps) => {
   return (
-    <S.FilterContainer {...rest}>
+    <S.FilterContainer isActive={isActive} {...rest}>
       <S.Title>{title}</S.Title>
     </S.FilterContainer>
   );
