@@ -23,17 +23,7 @@ export const Players = () => {
   const { newGroupName } = route.params as RouteParams;
 
   const [team, setTeam] = useState("Time A");
-  const [players, setPlayers] = useState<string[]>([
-    "Ramon",
-    "Bia",
-    "Springboot",
-    "Iuri",
-    "Pedrão",
-    "Nicolas",
-    "Lya",
-    "Avião de combate",
-    "Urubu",
-  ]);
+  const [players, setPlayers] = useState<string[]>([]);
 
   return (
     <S.PlayersContainer>

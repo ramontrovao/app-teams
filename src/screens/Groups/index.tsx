@@ -30,6 +30,10 @@ export const Groups = () => {
     navigate("new-group");
   };
 
+  const handleOpenGroup = (group: string) => {
+    navigate("players", { newGroupName: group });
+  };
+
   useFocusEffect(
     useCallback(() => {
       console.log("rodou");
@@ -44,7 +48,9 @@ export const Groups = () => {
       <FlatList
         data={groups}
         keyExtractor={(item) => item}
-        renderItem={({ item }) => <GroupCard title={item} />}
+        renderItem={({ item }) => (
+          <GroupCard title={item} onPress={() => handleOpenGroup(item)} />
+        )}
         contentContainerStyle={groups.length === 0 && { marginTop: 80 }}
         ListEmptyComponent={
           <ListEmpty message="Parece que a lista está vazia :(. Que tal cadastrar a primeira turma?" />
