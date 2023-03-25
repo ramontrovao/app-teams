@@ -8,11 +8,13 @@ import { useState } from "react";
 
 import * as S from "./styles";
 
-import { FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
 import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
 import { useRoute } from "@react-navigation/native";
+import { addPlayerByGroup } from "@storage/players/addPlayerByGroup";
+import { AppError } from "@utils/AppError";
 
 type RouteParams = {
   newGroupName: string;
@@ -22,8 +24,34 @@ export const Players = () => {
   const route = useRoute();
   const { newGroupName } = route.params as RouteParams;
 
+  const [newPlayerName, setNewPlayerName] = useState("");
   const [team, setTeam] = useState("Time A");
   const [players, setPlayers] = useState<string[]>([]);
+
+  const handleAddPlayer = async () => {
+    if (newPlayerName.trim().length === 0) {
+      return Alert.alert("ERRO", "Informe o nome da pessoa para adicionar!");
+    }
+
+    const newPlayer = {
+      name: newPlayerName,
+      team,
+    };
+
+    try {
+      await addPlayerByGroup(newPlayer, newGroupName);
+    } catch (err) {
+      if (err instanceof AppError) {
+        return Alert.alert("ERRO", err.message);
+      } else {
+        console.log(err);
+        return Alert.alert(
+          "ERRO",
+          "Não foi possível adicionar um novo jogador, entre em contato com o suporte para saber mais."
+        );
+      }
+    }
+  };
 
   return (
     <S.PlayersContainer>
@@ -35,13 +63,17 @@ export const Players = () => {
       />
 
       <S.FormContainer>
-        <Input placeholder="Nome da pessoa" autoCorrect={false} />
-        <ButtonIcon variant="GREEN" icon="add" />
+        <Input
+          onChangeText={setNewPlayerName}
+          placeholder="Nome da pessoa"
+          autoCorrect={false}
+        />
+        <ButtonIcon onPress={handleAddPlayer} variant="GREEN" icon="add" />
       </S.FormContainer>
 
       <S.HeaderList>
         <FlatList
-          data={["Time A", "Time B"]}
+          data={["Time A", "Time B", "Time C"]}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <Filter
