@@ -4,7 +4,7 @@ import { Header } from "@components/Header";
 import { Hightlight } from "@components/Highlight";
 import { Input } from "@components/Input";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import * as S from "./styles";
 
@@ -12,9 +12,11 @@ import { Alert, FlatList } from "react-native";
 import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
-import { useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { addPlayerByGroup } from "@storage/players/addPlayerByGroup";
 import { AppError } from "@utils/AppError";
+import { getPlayersByGroupAndTeam } from "@storage/players/getPlayersByGroupAndTeam";
+import { PlayerStorageDTO } from "@storage/players/PlayerStorageDTO";
 
 type RouteParams = {
   newGroupName: string;
@@ -26,7 +28,7 @@ export const Players = () => {
 
   const [newPlayerName, setNewPlayerName] = useState("");
   const [team, setTeam] = useState("Time A");
-  const [players, setPlayers] = useState<string[]>([]);
+  const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
 
   const handleAddPlayer = async () => {
     if (newPlayerName.trim().length === 0) {
@@ -40,6 +42,7 @@ export const Players = () => {
 
     try {
       await addPlayerByGroup(newPlayer, newGroupName);
+      await fetchPlayersByGroupAndTeam();
     } catch (err) {
       if (err instanceof AppError) {
         return Alert.alert("ERRO", err.message);
@@ -52,6 +55,24 @@ export const Players = () => {
       }
     }
   };
+
+  const fetchPlayersByGroupAndTeam = async () => {
+    try {
+      const playersFiltered = await getPlayersByGroupAndTeam(
+        team,
+        newGroupName
+      );
+
+      setPlayers(playersFiltered);
+    } catch (err) {
+      console.log(err);
+      Alert.alert("ERRO", "afwafwafaw");
+    }
+  };
+
+  useEffect(() => {
+    fetchPlayersByGroupAndTeam();
+  }, [team]);
 
   return (
     <S.PlayersContainer>
@@ -73,7 +94,7 @@ export const Players = () => {
 
       <S.HeaderList>
         <FlatList
-          data={["Time A", "Time B", "Time C"]}
+          data={["Time A", "Time B"]}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <Filter
@@ -91,8 +112,8 @@ export const Players = () => {
 
       <FlatList
         data={players}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => <PlayerCard name={item} />}
+        keyExtractor={(item) => item.name}
+        renderItem={({ item }) => <PlayerCard name={item.name} />}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <ListEmpty message="O time está vazio. Adicione jogadores e se divirtam!" />

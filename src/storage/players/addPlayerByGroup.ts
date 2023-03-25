@@ -11,10 +11,10 @@ export const addPlayerByGroup = async (
   try {
     const players = await listAllPlayersInGroup(group);
     const playerAlreadyExists = players.filter(
-      (player) => player === newPlayer
+      (player) => player.name === newPlayer.name
     );
 
-    if (playerAlreadyExists.length === 0) {
+    if (playerAlreadyExists.length > 0) {
       throw new AppError("Esse jogador já existe!");
     }
 
