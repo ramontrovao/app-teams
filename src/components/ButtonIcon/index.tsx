@@ -12,9 +12,10 @@ export const ButtonIcon = ({
   icon,
   variant = "GREEN",
   size = 24,
+  ...rest
 }: ButtonIconProps) => {
   return (
-    <S.ButtonIconContainer>
+    <S.ButtonIconContainer {...rest}>
       <S.Icon name={icon} variant={variant} size={size} />
     </S.ButtonIconContainer>
   );
