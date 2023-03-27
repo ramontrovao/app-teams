@@ -17,6 +17,7 @@ import { addPlayerByGroup } from "@storage/players/addPlayerByGroup";
 import { AppError } from "@utils/AppError";
 import { getPlayersByGroupAndTeam } from "@storage/players/getPlayersByGroupAndTeam";
 import { PlayerStorageDTO } from "@storage/players/PlayerStorageDTO";
+import { removePlayerByGroup } from "@storage/players/removePlayerByGroup";
 
 type RouteParams = {
   newGroupName: string;
@@ -62,6 +63,19 @@ export const Players = () => {
     }
   };
 
+  const handleRemovePlayer = async (playerName: string) => {
+    try {
+      await removePlayerByGroup(playerName, newGroupName);
+      fetchPlayersByGroupAndTeam();
+    } catch (err) {
+      console.log(err);
+      Alert.alert(
+        "ERRO",
+        "Algo deu errado ao remover o jogador, entre em contato com o suporte."
+      );
+    }
+  };
+
   const fetchPlayersByGroupAndTeam = async () => {
     try {
       const playersFiltered = await getPlayersByGroupAndTeam(
@@ -93,7 +107,9 @@ export const Players = () => {
         <Input
           inputRef={newPlayerNameInputRef}
           onChangeText={setNewPlayerName}
+          onSubmitEditing={handleAddPlayer}
           value={newPlayerName}
+          returnKeyType="done"
           placeholder="Nome da pessoa"
           autoCorrect={false}
         />
@@ -121,7 +137,12 @@ export const Players = () => {
       <FlatList
         data={players}
         keyExtractor={(item) => item.name}
-        renderItem={({ item }) => <PlayerCard name={item.name} />}
+        renderItem={({ item }) => (
+          <PlayerCard
+            name={item.name}
+            onRemove={() => handleRemovePlayer(item.name)}
+          />
+        )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <ListEmpty message="O time está vazio. Adicione jogadores e se divirtam!" />
