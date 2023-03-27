@@ -12,26 +12,40 @@ import { Alert, FlatList, TextInput } from "react-native";
 import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { addPlayerByGroup } from "@storage/players/addPlayerByGroup";
 import { AppError } from "@utils/AppError";
 import { getPlayersByGroupAndTeam } from "@storage/players/getPlayersByGroupAndTeam";
 import { PlayerStorageDTO } from "@storage/players/PlayerStorageDTO";
 import { removePlayerByGroup } from "@storage/players/removePlayerByGroup";
+import { removeGroupByName } from "@storage/group/removeGroupByName";
 
 type RouteParams = {
-  newGroupName: string;
+  groupName: string;
 };
 
 export const Players = () => {
   const route = useRoute();
-  const { newGroupName } = route.params as RouteParams;
+  const { navigate } = useNavigation();
+
+  const { groupName } = route.params as RouteParams;
 
   const [newPlayerName, setNewPlayerName] = useState("");
   const [team, setTeam] = useState("Time A");
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
 
   const newPlayerNameInputRef = useRef<TextInput>(null);
+
+  const fetchPlayersByGroupAndTeam = async () => {
+    try {
+      const playersFiltered = await getPlayersByGroupAndTeam(team, groupName);
+
+      setPlayers(playersFiltered);
+    } catch (err) {
+      console.log(err);
+      Alert.alert("ERRO", "afwafwafaw");
+    }
+  };
 
   const handleAddPlayer = async () => {
     if (newPlayerName.trim().length === 0) {
@@ -44,7 +58,7 @@ export const Players = () => {
     };
 
     try {
-      await addPlayerByGroup(newPlayer, newGroupName);
+      await addPlayerByGroup(newPlayer, groupName);
 
       newPlayerNameInputRef.current?.blur();
 
@@ -65,7 +79,7 @@ export const Players = () => {
 
   const handleRemovePlayer = async (playerName: string) => {
     try {
-      await removePlayerByGroup(playerName, newGroupName);
+      await removePlayerByGroup(playerName, groupName);
       fetchPlayersByGroupAndTeam();
     } catch (err) {
       console.log(err);
@@ -76,18 +90,29 @@ export const Players = () => {
     }
   };
 
-  const fetchPlayersByGroupAndTeam = async () => {
+  const removeGroup = async () => {
     try {
-      const playersFiltered = await getPlayersByGroupAndTeam(
-        team,
-        newGroupName
-      );
+      await removeGroupByName(groupName);
 
-      setPlayers(playersFiltered);
+      navigate("groups");
     } catch (err) {
       console.log(err);
-      Alert.alert("ERRO", "afwafwafaw");
+      Alert.alert(
+        "ERRO",
+        "Ocorreu um erro ao remover o grupo, entre em contato com o suporte."
+      );
     }
+  };
+
+  const handleRemoveGroup = () => {
+    Alert.alert(
+      "REMOVER",
+      `Tem certeza que deseja remover o grupo ${groupName}`,
+      [
+        { text: "Não", style: "cancel" },
+        { text: "Sim", onPress: () => removeGroup() },
+      ]
+    );
   };
 
   useEffect(() => {
@@ -99,7 +124,7 @@ export const Players = () => {
       <Header hasButton />
 
       <Hightlight
-        title={newGroupName}
+        title={groupName}
         subtitle="Adicione a galera e separe os times! :)"
       />
 
@@ -149,7 +174,7 @@ export const Players = () => {
         }
       />
 
-      <Button title="Remover time" type="RED" />
+      <Button title="Remover time" type="RED" onPress={handleRemoveGroup} />
     </S.PlayersContainer>
   );
 };
