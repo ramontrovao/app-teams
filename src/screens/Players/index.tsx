@@ -4,11 +4,11 @@ import { Header } from "@components/Header";
 import { Hightlight } from "@components/Highlight";
 import { Input } from "@components/Input";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import * as S from "./styles";
 
-import { Alert, FlatList } from "react-native";
+import { Alert, FlatList, TextInput } from "react-native";
 import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
@@ -30,6 +30,8 @@ export const Players = () => {
   const [team, setTeam] = useState("Time A");
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
 
+  const newPlayerNameInputRef = useRef<TextInput>(null);
+
   const handleAddPlayer = async () => {
     if (newPlayerName.trim().length === 0) {
       return Alert.alert("ERRO", "Informe o nome da pessoa para adicionar!");
@@ -42,6 +44,7 @@ export const Players = () => {
 
     try {
       await addPlayerByGroup(newPlayer, newGroupName);
+      setNewPlayerName("");
       await fetchPlayersByGroupAndTeam();
     } catch (err) {
       if (err instanceof AppError) {
@@ -85,7 +88,9 @@ export const Players = () => {
 
       <S.FormContainer>
         <Input
+          inputRef={newPlayerNameInputRef}
           onChangeText={setNewPlayerName}
+          value={newPlayerName}
           placeholder="Nome da pessoa"
           autoCorrect={false}
         />

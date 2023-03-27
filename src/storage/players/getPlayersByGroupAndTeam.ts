@@ -1,5 +1,4 @@
 import { listAllPlayersInGroup } from "./listAllPlayersInGroup";
-import { PlayerStorageDTO } from "./PlayerStorageDTO";
 
 export const getPlayersByGroupAndTeam = async (team: string, group: string) => {
   try {
