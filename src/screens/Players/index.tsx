@@ -19,6 +19,7 @@ import { getPlayersByGroupAndTeam } from "@storage/players/getPlayersByGroupAndT
 import { PlayerStorageDTO } from "@storage/players/PlayerStorageDTO";
 import { removePlayerByGroup } from "@storage/players/removePlayerByGroup";
 import { removeGroupByName } from "@storage/group/removeGroupByName";
+import { Loading } from "@components/Loading";
 
 type RouteParams = {
   groupName: string;
@@ -30,6 +31,7 @@ export const Players = () => {
 
   const { groupName } = route.params as RouteParams;
 
+  const [isLoading, setIsLoading] = useState(true);
   const [newPlayerName, setNewPlayerName] = useState("");
   const [team, setTeam] = useState("Time A");
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
@@ -38,12 +40,18 @@ export const Players = () => {
 
   const fetchPlayersByGroupAndTeam = async () => {
     try {
+      setIsLoading(true);
       const playersFiltered = await getPlayersByGroupAndTeam(team, groupName);
 
       setPlayers(playersFiltered);
     } catch (err) {
       console.log(err);
-      Alert.alert("ERRO", "afwafwafaw");
+      Alert.alert(
+        "ERRO",
+        "Não foi possível filtrar os jogadores, entre em contato com o suporte."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -159,20 +167,24 @@ export const Players = () => {
         <S.NumberOfPlayers>{players.length}</S.NumberOfPlayers>
       </S.HeaderList>
 
-      <FlatList
-        data={players}
-        keyExtractor={(item) => item.name}
-        renderItem={({ item }) => (
-          <PlayerCard
-            name={item.name}
-            onRemove={() => handleRemovePlayer(item.name)}
-          />
-        )}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <ListEmpty message="O time está vazio. Adicione jogadores e se divirtam!" />
-        }
-      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <FlatList
+          data={players}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item }) => (
+            <PlayerCard
+              name={item.name}
+              onRemove={() => handleRemovePlayer(item.name)}
+            />
+          )}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <ListEmpty message="O time está vazio. Adicione jogadores e se divirtam!" />
+          }
+        />
+      )}
 
       <Button title="Remover time" type="RED" onPress={handleRemoveGroup} />
     </S.PlayersContainer>

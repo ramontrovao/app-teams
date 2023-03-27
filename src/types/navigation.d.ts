@@ -4,7 +4,7 @@ export declare global {
       groups: undefined;
       "new-group": undefined;
       players: {
-        newGroupName: string;
+        groupName: string;
       };
     }
   }

@@ -23,7 +23,7 @@ export const NewGroup = () => {
 
       await createGroup(newGroupName);
 
-      navigate("players", { newGroupName });
+      navigate("players", { groupName: newGroupName });
     } catch (error) {
       if (error instanceof AppError) {
         Alert.alert("ERRO", error.message);
