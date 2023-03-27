@@ -12,7 +12,7 @@ import { Alert, FlatList, TextInput } from "react-native";
 import { PlayerCard } from "@components/PlayerCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { addPlayerByGroup } from "@storage/players/addPlayerByGroup";
 import { AppError } from "@utils/AppError";
 import { getPlayersByGroupAndTeam } from "@storage/players/getPlayersByGroupAndTeam";
@@ -44,6 +44,9 @@ export const Players = () => {
 
     try {
       await addPlayerByGroup(newPlayer, newGroupName);
+
+      newPlayerNameInputRef.current?.blur();
+
       setNewPlayerName("");
       await fetchPlayersByGroupAndTeam();
     } catch (err) {
